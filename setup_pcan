@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "Setting up Peak CAN USB device $1 with bitrate $2"
+sudo ip link set $1 down
+sudo ip link set $1 type can bitrate $2 triple-sampling on
+sudo ip link set $1 up
+sudo ip -s -d link show $1
+echo "Starting candump on $1 ..."
+candump $1
