@@ -20,6 +20,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <cmath>
 
 /* Actuator thread */
 pthread_t threadId;
@@ -37,6 +38,7 @@ static void *updateActuator(void *)
         lastTime = currentTime;
         /*Then update position*/
         position_deg += velocity_ref_deg * delta_t;
+        position_deg = std::fmod(position_deg, 360.f);
     }
 }
 
@@ -84,7 +86,7 @@ int main(int argc, char** argv)
             continue;
         if ((request.can_id & CAN_SFF_MASK) == 0x7c0)
         {
-            std::cout << "[fake-can-dev] Got telemetry request. Sending response\n";
+            std::cout << "[fake-can-dev] Got telemetry request. Sending response with position " << position_deg << " deg\n";
             uint16_t position = position_deg * 0xFFFF / 360.f;
             // Send response
             struct can_frame response;

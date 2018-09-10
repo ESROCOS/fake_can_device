@@ -1,2 +1,2 @@
 #!/bin/bash
-g++ fake-dev.cpp -pthread -o fake-dev
+g++ fake-dev.cpp -pthread -lm -o fake-dev
